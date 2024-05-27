@@ -84,4 +84,5 @@
 /Users/josedomingoplaza/esp/projects_tf/person_detection/build/esp-idf/espressif__esp-nn/libespressif__esp-nn.a
 /Users/josedomingoplaza/esp/projects_tf/person_detection/build/esp-idf/espressif__esp-tflite-micro/libespressif__esp-tflite-micro.a
 /Users/josedomingoplaza/esp/projects_tf/person_detection/build/esp-idf/espressif__esp32-camera/libespressif__esp32-camera.a
+/Users/josedomingoplaza/esp/projects_tf/person_detection/build/esp-idf/espressif__led_strip/libespressif__led_strip.a
 /Users/josedomingoplaza/esp/projects_tf/person_detection/build/esp-idf/main/libmain.a

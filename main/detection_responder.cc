@@ -22,10 +22,17 @@ limitations under the License.
 #include "detection_responder.h"
 #include "tensorflow/lite/micro/micro_log.h"
 
+#include "driver/gpio.h"
+#define BLINK_GPIO GPIO_NUM_4
+
 #include "esp_main.h"
 #if DISPLAY_SUPPORT
 #include "image_provider.h"
 #include "bsp/esp-bsp.h"
+
+// #define BLINK_GPIO CONFIG_BLINK_GPIO
+
+static uint8_t s_led_state = 0;
 
 // Camera definition is always initialized to match the trained detection model: 96x96 pix
 // That is too small for LCD displays, so we extrapolate the image to 192x192 pix
@@ -58,25 +65,39 @@ static void create_gui(void)
 }
 #endif // DISPLAY_SUPPORT
 
-void RespondToDetection(float person_score, float no_person_score) {
+void RespondToDetection(float person_score, float no_person_score)
+{
   int person_score_int = (person_score) * 100 + 0.5;
-  (void) no_person_score; // unused
+  (void)no_person_score; // unused
 #if DISPLAY_SUPPORT
-    if (!camera_canvas) {
-      create_gui();
-    }
+  if (!camera_canvas)
+  {
+    create_gui();
+  }
 
-    uint16_t *buf = (uint16_t *) image_provider_get_display_buf();
+  uint16_t *buf = (uint16_t *)image_provider_get_display_buf();
 
-    bsp_display_lock(0);
-    if (person_score_int < 60) { // treat score less than 60% as no person
-      lv_led_off(person_indicator);
-    } else {
-      lv_led_on(person_indicator);
-    }
-    lv_canvas_set_buffer(camera_canvas, buf, IMG_WD, IMG_HT, LV_IMG_CF_TRUE_COLOR);
-    bsp_display_unlock();
+  bsp_display_lock(0);
+  if (person_score_int < 60)
+  { // treat score less than 60% as no person
+    lv_led_off(person_indicator);
+  }
+  else
+  {
+    lv_led_on(person_indicator);
+  }
+  lv_canvas_set_buffer(camera_canvas, buf, IMG_WD, IMG_HT, LV_IMG_CF_TRUE_COLOR);
+  bsp_display_unlock();
 #endif // DISPLAY_SUPPORT
   MicroPrintf("person score:%d%%, no person score %d%%",
               person_score_int, 100 - person_score_int);
+
+  if (person_score_int > 60)
+  {
+    gpio_set_level(BLINK_GPIO, 1);
+  }
+  else
+  {
+    gpio_set_level(BLINK_GPIO, 0);
+  }
 }

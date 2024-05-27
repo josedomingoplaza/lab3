@@ -84,4 +84,5 @@ $<TARGET_FILE:__idf_static_images>
 $<TARGET_FILE:__idf_espressif__esp-nn>
 $<TARGET_FILE:__idf_espressif__esp-tflite-micro>
 $<TARGET_FILE:__idf_espressif__esp32-camera>
+$<TARGET_FILE:__idf_espressif__led_strip>
 $<TARGET_FILE:__idf_main>

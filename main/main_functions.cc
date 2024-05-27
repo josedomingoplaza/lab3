@@ -24,6 +24,8 @@ limitations under the License.
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/schema/schema_generated.h"
 
+#include "driver/gpio.h"
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -31,6 +33,8 @@ limitations under the License.
 #include <esp_timer.h>
 #include <esp_log.h>
 #include "esp_main.h"
+
+// #define BLINK_GPIO GPIO_NUM_4
 
 // Globals, used for compatibility with Arduino-style sketches.
 namespace
@@ -59,8 +63,9 @@ namespace
 // The name of this function is important for Arduino compatibility.
 void setup()
 {
-  // Map the model into a usable data structure. This doesn't involve any
-  // copying or parsing, it's a very lightweight operation.
+  // gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
+  //  Map the model into a usable data structure. This doesn't involve any
+  //  copying or parsing, it's a very lightweight operation.
   model = tflite::GetModel(g_person_detect_model_data);
   if (model->version() != TFLITE_SCHEMA_VERSION)
   {
